@@ -1,45 +1,41 @@
 ﻿using EcsTestSite.Components;
+using EcsTestSite.Presentation;
+using EcsTestSite.Systems.Groups;
 using EcsTestSite.Utility;
-using EcsTestSite.View.Utility;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EcsTestSite.View
+namespace EcsTestSite.Systems
 {
-	public sealed class InputManager : MonoBehaviour
+	[UpdateInGroup(typeof(InputSystemGroup))]
+	public partial class InputSystem : SystemBase
 	{
 		private const float RAYCAST_HEIGHT = 100f;
 		
 		private static readonly RaycastHit[] _raycastHitsBuffer = new RaycastHit[64];
 		
-		private EntityManager _entityManager;
 		private EntityQuery _playerQuery;
-		
-		private Keyboard _keyboard;
-		private Mouse _mouse;
-		private Camera _camera;
-		
+
 		private UnitView _unitUnderMouse;
 		private Vector3? _positionUnderMouse;
 
-		private void Start()
-		{
-			_entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
-			_playerQuery = _entityManager.CreateEntityQuery(new EntityQueryDesc
+		public Keyboard Keyboard { get; set; }
+		public Mouse Mouse { get; set; }
+		public Camera Camera { get; set; }
+
+		protected override void OnCreate()
+		{			
+			_playerQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
 			{
 				All = new ComponentType[] {typeof(UnitTag), typeof(PlayerTag)},
 			});
-			
-			_keyboard = Keyboard.current;
-			_mouse = Mouse.current;
-			_camera = FindAnyObjectByType<CameraRig>()?.Camera;
 		}
 
-		private void Update()
+		protected override void OnUpdate()
 		{
-			int count = RaycastFromMouse(_camera, Layers.ClickableMask, _raycastHitsBuffer);
+			int count = RaycastFromMouse(Camera, Layers.ClickableMask, _raycastHitsBuffer);
 			
 			float closestTargetDistance = float.MaxValue;
 			GameObject closestTarget = null;
@@ -90,7 +86,7 @@ namespace EcsTestSite.View
 			_unitUnderMouse = finalTarget?.GetComponentInParent<UnitView>();
 			_positionUnderMouse = finalGroundPoint;
 
-			if (_mouse.leftButton.wasPressedThisFrame)
+			if (Mouse.leftButton.wasPressedThisFrame)
 			{
 				if (_unitUnderMouse != null)
 					HandleTargetClick(_unitUnderMouse);
@@ -107,7 +103,7 @@ namespace EcsTestSite.View
 				ecb.AddComponent(entity, new MovementDestination {Value = point});
 			}
 			
-			ecb.Playback(_entityManager);
+			ecb.Playback(EntityManager);
 		}
 
 		private void HandleTargetClick(UnitView target)
@@ -119,7 +115,7 @@ namespace EcsTestSite.View
 				ArchetypesFactory.BuildAbilityProjectileAttack(writer, entity, target.Entity);
 			}
 			
-			ecb.Playback(_entityManager);
+			ecb.Playback(EntityManager);
 		}
 
 		private static int RaycastFromMouse(Camera camera, LayerMask mask, RaycastHit[] hits)

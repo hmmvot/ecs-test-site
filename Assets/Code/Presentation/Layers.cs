@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace EcsTestSite.View
+namespace EcsTestSite.Presentation
 {
 	public static class Layers
 	{

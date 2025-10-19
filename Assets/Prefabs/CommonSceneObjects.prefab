@@ -324,7 +324,7 @@ GameObject:
   - component: {fileID: 4631739319618950674}
   - component: {fileID: 8461575471618146470}
   m_Layer: 0
-  m_Name: ViewManager
+  m_Name: ViewSystemBootstrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -459,7 +459,7 @@ GameObject:
   - component: {fileID: 3185594924225410131}
   - component: {fileID: 5333746069614718891}
   m_Layer: 0
-  m_Name: InputManager
+  m_Name: InputSystemBootstrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

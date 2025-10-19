@@ -1,9 +1,8 @@
-﻿using System;
-using EcsTestSite.Components;
+﻿using EcsTestSite.Components;
 using TMPro;
 using UnityEngine;
 
-namespace EcsTestSite.View
+namespace EcsTestSite.Presentation
 {
 	public sealed class UnitView : EntityView
 	{
@@ -14,12 +13,12 @@ namespace EcsTestSite.View
 
 		private Camera _camera;
 
-		private void Start()
+		public override void OnInitialize()
 		{
 			_camera = Camera.main;
 		}
 
-		protected override void OnLateUpdate()
+		public override void OnUpdate()
 		{
 			bool isDead = EntityManager.HasComponent<DeadTag>(Entity) && EntityManager.IsComponentEnabled<DeadTag>(Entity);
 			if (isDead && (AliveView.activeSelf || !DeadView.activeSelf))

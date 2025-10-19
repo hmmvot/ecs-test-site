@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace EcsTestSite.View.Utility
+namespace EcsTestSite.Presentation
 {
     public sealed class CameraRig : MonoBehaviour
     {

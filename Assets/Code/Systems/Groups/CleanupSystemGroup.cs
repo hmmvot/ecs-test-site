@@ -2,9 +2,8 @@
 
 namespace EcsTestSite.Systems.Groups
 {
-	[UpdateInGroup(typeof(SimulationSystemGroup), OrderLast = true)]
+	[UpdateInGroup(typeof(LateSimulationSystemGroup), OrderLast = true)]
 	public sealed partial class CleanupSystemGroup : ComponentSystemGroup
 	{
-		
 	}
 }
