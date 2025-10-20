@@ -1,4 +1,5 @@
-﻿using EcsTestSite.Systems;
+﻿using EcsTestSite.Config;
+using EcsTestSite.Systems;
 using Unity.Entities;
 using UnityEngine;
 
@@ -6,8 +7,7 @@ namespace EcsTestSite.Presentation
 {
 	public sealed class ViewSystemBootstrap : MonoBehaviour
 	{
-		public UnitView PlayerUnitPrefab;
-		public UnitView EnemyUnitPrefab;
+		public CatalogConfig Catalog;
 		public ProjectileView ProjectilePrefab;
 
 		private void Awake()
@@ -18,8 +18,7 @@ namespace EcsTestSite.Presentation
 				if (system == null)
 					continue;
 				
-				system.PlayerUnitPrefab = PlayerUnitPrefab;
-				system.EnemyUnitPrefab = EnemyUnitPrefab;
+				system.Catalog = Catalog;
 				system.ProjectilePrefab = ProjectilePrefab;
 			}
 		}

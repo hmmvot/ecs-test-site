@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EcsTestSite.Presentation
 {
-	public sealed class UnitView : EntityView
+	public sealed class CharacterView : EntityView
 	{
 		public GameObject AliveView;
 		public GameObject DeadView;

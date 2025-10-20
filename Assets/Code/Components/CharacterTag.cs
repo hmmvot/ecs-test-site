@@ -2,7 +2,7 @@
 
 namespace EcsTestSite.Components
 {
-	public struct UnitTag : IComponentData
+	public struct CharacterTag : IComponentData
 	{
 	}
 }

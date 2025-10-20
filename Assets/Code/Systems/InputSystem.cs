@@ -18,7 +18,7 @@ namespace EcsTestSite.Systems
 		
 		private EntityQuery _playerQuery;
 
-		private UnitView _unitUnderMouse;
+		private CharacterView _characterUnderMouse;
 		private Vector3? _positionUnderMouse;
 
 		public Keyboard Keyboard { get; set; }
@@ -29,7 +29,7 @@ namespace EcsTestSite.Systems
 		{			
 			_playerQuery = EntityManager.CreateEntityQuery(new EntityQueryDesc
 			{
-				All = new ComponentType[] {typeof(UnitTag), typeof(PlayerTag)},
+				All = new ComponentType[] {typeof(CharacterTag), typeof(PlayerTag)},
 			});
 		}
 
@@ -83,13 +83,13 @@ namespace EcsTestSite.Systems
 				finalGroundPoint = closesGroundPoint;
 			}
 			
-			_unitUnderMouse = finalTarget?.GetComponentInParent<UnitView>();
+			_characterUnderMouse = finalTarget?.GetComponentInParent<CharacterView>();
 			_positionUnderMouse = finalGroundPoint;
 
 			if (Mouse.leftButton.wasPressedThisFrame)
 			{
-				if (_unitUnderMouse != null)
-					HandleTargetClick(_unitUnderMouse);
+				if (_characterUnderMouse != null)
+					HandleTargetClick(_characterUnderMouse);
 				else if (_positionUnderMouse != null)
 					HandleGroundClick(_positionUnderMouse.Value);
 			}
@@ -106,7 +106,7 @@ namespace EcsTestSite.Systems
 			ecb.Playback(EntityManager);
 		}
 
-		private void HandleTargetClick(UnitView target)
+		private void HandleTargetClick(CharacterView target)
 		{
 			using var ecb = new EntityCommandBuffer(Allocator.Temp);
 			foreach (var entity in _playerQuery.ToEntityArray(Allocator.Temp))

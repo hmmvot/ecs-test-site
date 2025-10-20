@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using EcsTestSite.Components;
+using EcsTestSite.Config;
 using EcsTestSite.Presentation;
 using Unity.Collections;
 using Unity.Entities;
@@ -16,9 +17,9 @@ namespace EcsTestSite.Systems
 		private EntityQuery _projectileQuery;
 		
 		private readonly Dictionary<Entity, EntityView> _entityViews = new();
-
-		public UnitView PlayerUnitPrefab { get; set; }
-		public UnitView EnemyUnitPrefab { get; set; }
+		
+		public CatalogConfig Catalog { get; set; }
+		
 		public ProjectileView ProjectilePrefab { get; set; }
 		
 		protected override void OnCreate()
@@ -27,7 +28,8 @@ namespace EcsTestSite.Systems
 			{
 				All = new ComponentType[]
 				{
-					typeof(UnitTag),
+					typeof(CharacterTag),
+					typeof(CharacterDef),
 					typeof(LocalToWorld),
 				},
 			});
@@ -61,10 +63,8 @@ namespace EcsTestSite.Systems
 			{
 				if (!_entityViews.ContainsKey(entity))
 				{
-					var prefab = EntityManager.IsComponentEnabled<PlayerTag>(entity)
-						? PlayerUnitPrefab
-						: EnemyUnitPrefab;
-					InstantiateView(entity, prefab);
+					var config = Catalog.GetCharacter(EntityManager.GetComponentData<CharacterDef>(entity).ID);
+					InstantiateView(entity, config.Prefab);
 				}
 			}
 			
